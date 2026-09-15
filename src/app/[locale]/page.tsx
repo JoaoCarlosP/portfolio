@@ -6,7 +6,10 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Metrics } from "@/components/Metrics";
 import { Projects } from "@/components/Projects";
+import { InstallPrompt } from "@/components/InstallPrompt";
+import { ServiceWorker } from "@/components/ServiceWorker";
 import { Skills } from "@/components/Skills";
+import { TechMarquee } from "@/components/TechMarquee";
 import { Work } from "@/components/Work";
 import { getDictionary } from "@/content/dictionary";
 import { site } from "@/content/site";
@@ -46,6 +49,7 @@ export default async function Page({
       <main className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">
         <Hero t={t} />
         <Metrics t={t} />
+        <TechMarquee label={t.marquee.label} />
         <About t={t} />
         <Work t={t} />
         <Projects t={t} locale={locale} />
@@ -53,6 +57,9 @@ export default async function Page({
         <Contact t={t} />
         <Footer t={t} />
       </main>
+      <ServiceWorker />
+      <InstallPrompt t={t} />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

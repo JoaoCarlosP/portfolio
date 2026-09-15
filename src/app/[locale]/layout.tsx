@@ -1,17 +1,31 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Plus_Jakarta_Sans, Sora } from "next/font/google";
 import { getDictionary } from "@/content/dictionary";
 import { site } from "@/content/site";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 import "../globals.css";
 
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+const sans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--ff-sans",
+  display: "swap",
+});
+const display = Sora({ subsets: ["latin"], variable: "--ff-display", display: "swap" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--ff-mono", display: "swap" });
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
+
+export const viewport: Viewport = {
+  // cover keeps the layout under the notch on installed iOS devices
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0d13" },
+  ],
+};
 
 export async function generateMetadata({
   params,
@@ -26,9 +40,16 @@ export async function generateMetadata({
     metadataBase: new URL(site.url),
     title: t.meta.title,
     description: t.meta.description,
+    applicationName: site.shortName,
     alternates: {
       canonical: `/${locale}`,
       languages: { pt: "/pt", en: "/en" },
+    },
+    // iOS ignores the manifest for home-screen installs and reads these.
+    appleWebApp: {
+      capable: true,
+      title: site.shortName,
+      statusBarStyle: "black",
     },
     openGraph: {
       type: "website",
@@ -74,9 +95,17 @@ export default async function LocaleLayout({
   return (
     <html lang={locale as Locale} suppressHydrationWarning>
       <head>
+        {/*
+          Next emits only the standardised `mobile-web-app-capable`. iOS
+          before 16.4 does not read the manifest, so it still needs
+          Apple's legacy flag to launch standalone.
+        */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${sans.variable} ${mono.variable} font-sans antialiased`}>
+      <body
+        className={`${sans.variable} ${display.variable} ${mono.variable} font-sans antialiased`}
+      >
         {children}
       </body>
     </html>

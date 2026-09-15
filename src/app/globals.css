@@ -5,7 +5,7 @@
 :root {
   --canvas: #ffffff;
   --surface: #f6f8fb;
-  --line: #e3e8ef;
+  --line: rgba(12, 16, 23, 0.1);
   --ink: #0c1017;
   --muted: #5a6575;
   --accent: #2f62c9;
@@ -36,7 +36,7 @@
 .dark {
   --canvas: #0a0d13;
   --surface: #11161f;
-  --line: #1e2633;
+  --line: rgba(255, 255, 255, 0.11);
   --ink: #e7ecf5;
   --muted: #8b95a8;
   --accent: #7aa2f7;
@@ -74,8 +74,9 @@
   --color-grad-1: var(--grad-1);
   --color-grad-2: var(--grad-2);
   --color-grad-3: var(--grad-3);
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--ff-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--ff-display), var(--ff-sans), ui-sans-serif, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 html {
@@ -87,6 +88,19 @@ body {
   background-color: var(--canvas);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Uses --ff-display (set on <body> by next/font) rather than the Tailwind
+ * token: `@theme inline` substitutes tokens into utilities instead of
+ * emitting them as :root variables, so var(--font-display) is empty here.
+ */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--ff-display), var(--ff-sans), ui-sans-serif, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 ::selection {
@@ -185,6 +199,49 @@ body {
   to {
     transform: translate3d(6%, -9%, 0) scale(0.9);
   }
+}
+
+/* ---------------------------------------------------------------- *
+ * Tech marquee
+ * ---------------------------------------------------------------- */
+
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* Two identical halves, so translating by exactly -50% loops seamlessly. */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 3.5rem;
+  animation: marquee-scroll 48s linear infinite;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-item {
+  color: var(--muted);
+  opacity: 0.6;
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease;
+}
+
+.marquee-item:hover {
+  color: var(--brand, var(--accent));
+  opacity: 1;
 }
 
 /* ---------------------------------------------------------------- *
@@ -354,6 +411,7 @@ body {
   }
   .text-gradient,
   .scroll-progress,
+  .marquee-track,
   /* matched per-child so this outranks the .aurora span:nth-child rules */
   .aurora span:nth-child(1),
   .aurora span:nth-child(2),

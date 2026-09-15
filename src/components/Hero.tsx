@@ -20,7 +20,9 @@ export function Hero({ t }: { t: Dictionary }) {
           <h1 className="mt-6 text-4xl font-semibold tracking-tight text-balance text-ink sm:text-5xl">
             {site.name}
           </h1>
-          <p className="mt-2 font-mono text-sm text-accent">{t.hero.role}</p>
+          <p className="mt-2 font-mono text-[13px] text-balance text-accent sm:text-sm">
+            {t.hero.role}
+          </p>
 
           <p className="text-gradient mt-6 text-xl leading-snug font-medium text-balance sm:text-2xl">
             {t.hero.headline}

@@ -5,9 +5,9 @@ export type Dictionary = (typeof dictionaries)[Locale];
 export const dictionaries = {
   pt: {
     meta: {
-      title: "João Carlos Pereira — Desenvolvedor Front-end",
+      title: "João Carlos Pereira — Desenvolvedor Fullstack com foco em Front-end",
       description:
-        "Desenvolvedor front-end com 4 anos construindo produtos no mercado financeiro. React, TypeScript e arquitetura de front-end.",
+        "Desenvolvedor fullstack com foco em front-end e 4 anos construindo produtos no mercado financeiro. React, TypeScript e arquitetura de front-end.",
     },
     nav: {
       about: "Sobre",
@@ -20,7 +20,7 @@ export const dictionaries = {
     },
     hero: {
       available: "Aberto a novas oportunidades",
-      role: "Desenvolvedor Front-end",
+      role: "Desenvolvedor Fullstack com foco em Front‑end",
       headline: "Construo interfaces que aguentam produto de verdade.",
       lead: "São 4 anos desenvolvendo software para o mercado financeiro — SaaS e soluções para correspondentes bancários. React e TypeScript são meu terreno principal; Node.js entra quando o problema pede.",
       ctaProjects: "Ver projetos",
@@ -65,7 +65,7 @@ export const dictionaries = {
     work: {
       title: "Experiência",
       subtitle: "Mercado financeiro · 4 anos",
-      role: "Desenvolvedor Front-end / Fullstack",
+      role: "Desenvolvedor Fullstack com foco em Front‑end",
       period: "2022 — presente",
       summary:
         "Desenvolvimento de produtos SaaS e soluções para correspondentes bancários, do primeiro componente até o deploy.",
@@ -104,13 +104,24 @@ export const dictionaries = {
     },
     contact: {
       title: "Contato",
-      lead: "Aberto a oportunidades como desenvolvedor front-end. Respondo mais rápido por e-mail ou LinkedIn.",
+      lead: "Aberto a oportunidades como desenvolvedor fullstack ou front-end. Respondo mais rápido por e-mail ou LinkedIn.",
       emailLabel: "E-mail",
       linkedinLabel: "LinkedIn",
       githubLabel: "GitHub",
       locationLabel: "Localização",
       copy: "Copiar",
       copied: "Copiado",
+    },
+    marquee: {
+      label: "Tecnologias que uso",
+    },
+    pwa: {
+      title: "Instalar este portfólio",
+      body: "Adicione à tela de início para abrir rápido, inclusive offline.",
+      install: "Instalar",
+      iosTitle: "Instalar no iPhone ou iPad",
+      iosBody: "Toque em Compartilhar e escolha \"Adicionar à Tela de Início\".",
+      dismiss: "Fechar",
     },
     footer: {
       built: "Construído com Next.js, TypeScript e Tailwind CSS.",
@@ -121,9 +132,9 @@ export const dictionaries = {
 
   en: {
     meta: {
-      title: "João Carlos Pereira — Front-end Developer",
+      title: "João Carlos Pereira — Fullstack Developer, front-end focused",
       description:
-        "Front-end developer with 4 years building products for the financial sector. React, TypeScript and front-end architecture.",
+        "Fullstack developer with a front-end focus and 4 years building products for the financial sector. React, TypeScript and front-end architecture.",
     },
     nav: {
       about: "About",
@@ -136,7 +147,7 @@ export const dictionaries = {
     },
     hero: {
       available: "Open to new opportunities",
-      role: "Front-end Developer",
+      role: "Fullstack Developer, front‑end focused",
       headline: "I build interfaces that hold up under real product weight.",
       lead: "Four years building software for the financial sector — SaaS platforms and tools for banking correspondents. React and TypeScript are my home ground; Node.js comes in when the problem calls for it.",
       ctaProjects: "See projects",
@@ -181,7 +192,7 @@ export const dictionaries = {
     work: {
       title: "Experience",
       subtitle: "Financial sector · 4 years",
-      role: "Front-end / Fullstack Developer",
+      role: "Fullstack Developer, front‑end focused",
       period: "2022 — present",
       summary:
         "Building SaaS products and tools for banking correspondents, from the first component to deployment.",
@@ -220,13 +231,24 @@ export const dictionaries = {
     },
     contact: {
       title: "Contact",
-      lead: "Open to front-end developer roles. Email or LinkedIn get the fastest reply.",
+      lead: "Open to fullstack and front-end roles. Email or LinkedIn get the fastest reply.",
       emailLabel: "Email",
       linkedinLabel: "LinkedIn",
       githubLabel: "GitHub",
       locationLabel: "Location",
       copy: "Copy",
       copied: "Copied",
+    },
+    marquee: {
+      label: "Technologies I work with",
+    },
+    pwa: {
+      title: "Install this portfolio",
+      body: "Add it to your home screen to open it fast, even offline.",
+      install: "Install",
+      iosTitle: "Install on iPhone or iPad",
+      iosBody: "Tap Share and choose \"Add to Home Screen\".",
+      dismiss: "Dismiss",
     },
     footer: {
       built: "Built with Next.js, TypeScript and Tailwind CSS.",

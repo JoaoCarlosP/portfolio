@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfólio — João Carlos Pereira
 
-## Getting Started
+Site pessoal bilíngue (PT/EN) construído com Next.js App Router, TypeScript e Tailwind CSS.
 
-First, run the development server:
+🔗 **Produção:** _(preencher após o deploy)_
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+- **Next.js 16** (App Router, páginas estáticas)
+- **TypeScript** em modo estrito
+- **Tailwind CSS v4** com tokens de tema em CSS custom properties
+- **next/font** (Inter + JetBrains Mono, self-hosted)
+
+## Decisões de arquitetura
+
+**i18n sem dependência.** O idioma é um segmento de rota (`/pt`, `/en`), então cada versão é pré-renderizada como HTML estático com o `lang`, `canonical` e `hreflang` corretos. O `src/proxy.ts` detecta o `Accept-Language` na primeira visita e redireciona. Todo o texto vive em `src/content/dictionary.ts`.
+
+**Tema sem flash.** Um script inline no `<head>` aplica a classe `dark` antes da primeira pintura, lendo o `localStorage` ou a preferência do sistema. O `ThemeToggle` lê esse estado via `useSyncExternalStore` observando o `<html>`, o que evita `setState` dentro de `useEffect`.
+
+**Sem biblioteca de componentes.** Os componentes, tokens e ícones são próprios — o site é a amostra do trabalho.
+
+## Estrutura
+
+```
+src/
+├── app/[locale]/     # layout raiz (html/body) + página
+├── components/       # seções e UI
+├── content/          # textos PT/EN, projetos, dados de contato
+├── lib/i18n.ts       # locales e helpers
+└── proxy.ts          # redirect por Accept-Language
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Rodando
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Antes do deploy
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Atualizar `site.url` em `src/content/site.ts` com o domínio final (alimenta canonical e Open Graph)
+- [ ] Adicionar uma imagem Open Graph em `src/app/opengraph-image.png`

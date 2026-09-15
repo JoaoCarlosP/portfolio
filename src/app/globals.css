@@ -202,6 +202,138 @@ h3,
 }
 
 /* ---------------------------------------------------------------- *
+ * Intro preloader
+ *
+ * Driven entirely by CSS: if JavaScript never runs, the overlay still
+ * dismisses itself. The component only removes the node afterwards and
+ * releases the scroll lock it took.
+ * ---------------------------------------------------------------- */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1.75rem;
+  background: var(--canvas);
+  animation: splash-dismiss 0.65s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
+}
+
+.splash::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle clamp(14rem, 38vmin, 26rem) at 50% 45%, var(--blob-a), transparent 72%);
+  animation: splash-glow 1.8s ease-out both;
+}
+
+@keyframes splash-dismiss {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes splash-glow {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.splash-mark {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--ff-mono), ui-monospace, monospace;
+  font-size: clamp(2.5rem, 12vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* Brackets slide in from their own side. */
+.splash-bracket {
+  color: var(--accent);
+  opacity: 0;
+  animation: splash-bracket-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.splash-bracket:first-child {
+  --from: -1.6rem;
+}
+
+.splash-bracket:last-child {
+  --from: 1.6rem;
+}
+
+@keyframes splash-bracket-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--from));
+  }
+  to {
+    opacity: 0.75;
+    transform: none;
+  }
+}
+
+.splash-initials {
+  background: linear-gradient(110deg, var(--grad-1), var(--grad-2), var(--grad-3));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation:
+    splash-initials-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both,
+    gradient-pan 3s linear infinite;
+}
+
+@keyframes splash-initials-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.splash-bar {
+  width: clamp(7rem, 34vw, 11rem);
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.splash-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--grad-1), var(--grad-2), var(--grad-3));
+  transform-origin: 0 50%;
+  animation: splash-fill 1.35s cubic-bezier(0.55, 0, 0.35, 1) 0.15s both;
+}
+
+@keyframes splash-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------------------------------------------------------------- *
  * Tech marquee
  * ---------------------------------------------------------------- */
 
@@ -425,5 +557,17 @@ h3,
   .avatar-tilt[data-active="true"] {
     transform: none;
     transition: none;
+  }
+  /* Skip the intro rather than animate it. */
+  .splash {
+    animation: splash-dismiss 0.01s linear 0.15s forwards;
+  }
+  .splash::before,
+  .splash-bracket,
+  .splash-initials,
+  .splash-bar i {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

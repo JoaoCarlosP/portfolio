@@ -9,6 +9,7 @@ import { Projects } from "@/components/Projects";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { ServiceWorker } from "@/components/ServiceWorker";
 import { Skills } from "@/components/Skills";
+import { Splash } from "@/components/Splash";
 import { TechMarquee } from "@/components/TechMarquee";
 import { Work } from "@/components/Work";
 import { getDictionary } from "@/content/dictionary";
@@ -44,6 +45,8 @@ export default async function Page({
         <span />
         <span />
       </div>
+
+      <Splash />
 
       <Header t={t} locale={locale} />
       <main className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">

@@ -8,6 +8,9 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/joao-carlosp",
   location: "Sorocaba, SP — Brasil",
   avatar: "https://avatars.githubusercontent.com/u/99665853?v=4",
-  /** Update this once the site is deployed — it drives canonical + OG URLs. */
-  url: "https://joaocarlos.dev",
+  /**
+   * Drives canonical, hreflang and Open Graph URLs, so it must be the
+   * stable production domain. Swap this the day a custom domain is added.
+   */
+  url: "https://portfolio-psi-nine-owivwh6xx5.vercel.app",
 } as const;

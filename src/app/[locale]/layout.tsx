@@ -36,6 +36,19 @@ export async function generateMetadata({
   if (!isLocale(locale)) return {};
   const t = getDictionary(locale);
 
+  /*
+   * Declared from /public rather than the opengraph-image file
+   * convention: inside a dynamic segment that convention emits a
+   * placeholder path (/-/opengraph-image.png), and this URL exists to be
+   * fetched by other people's crawlers — it should be boring.
+   */
+  const ogImage = {
+    url: "/og.png",
+    width: 1200,
+    height: 630,
+    alt: t.meta.title,
+  };
+
   return {
     metadataBase: new URL(site.url),
     title: t.meta.title,
@@ -58,11 +71,13 @@ export async function generateMetadata({
       title: t.meta.title,
       description: t.meta.description,
       siteName: site.name,
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
       title: t.meta.title,
       description: t.meta.description,
+      images: [ogImage],
     },
   };
 }

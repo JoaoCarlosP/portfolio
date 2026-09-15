@@ -6,18 +6,22 @@ import { GithubIcon, LinkedinIcon } from "./brand-icons";
 
 export function Hero({ t }: { t: Dictionary }) {
   return (
-    <section className="relative pt-16 pb-16 sm:pt-24 sm:pb-20">
-      <div className="relative z-10 flex flex-col-reverse items-start gap-10 sm:flex-row sm:items-center sm:justify-between">
-        <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 font-mono text-xs text-muted">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex size-2 rounded-full bg-accent" />
-            </span>
-            {t.hero.available}
-          </span>
+    <section className="relative pt-10 pb-16 sm:pt-24 sm:pb-20">
+      <div className="hero-grid relative z-10">
+        <div className="[grid-area:avatar]">
+          <Avatar />
+        </div>
 
-          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-balance text-ink sm:text-5xl">
+        <span className="glass inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 font-mono text-[11px] text-muted sm:text-xs [grid-area:badge]">
+          <span className="relative flex size-2 shrink-0">
+            <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
+            <span className="relative inline-flex size-2 rounded-full bg-accent" />
+          </span>
+          {t.hero.available}
+        </span>
+
+        <div className="max-w-2xl [grid-area:body]">
+          <h1 className="text-4xl font-semibold tracking-tight text-balance text-ink sm:text-5xl">
             {site.name}
           </h1>
           <p className="mt-2 font-mono text-[13px] text-balance text-accent sm:text-sm">
@@ -34,7 +38,6 @@ export function Hero({ t }: { t: Dictionary }) {
               href="#projects"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink"
             >
-              {/* gradient wash slides across on hover */}
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-grad-1 via-grad-2 to-grad-3 transition-transform duration-500 group-hover:translate-x-0" />
               <span className="relative">{t.hero.ctaProjects}</span>
               <ArrowDown
@@ -70,9 +73,6 @@ export function Hero({ t }: { t: Dictionary }) {
             </div>
           </div>
         </div>
-
-        <Avatar />
-
       </div>
     </section>
   );

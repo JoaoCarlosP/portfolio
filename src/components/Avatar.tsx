@@ -49,7 +49,7 @@ export function Avatar() {
       {/* conic gradient ring, spinning faster while hovered */}
       <div
         aria-hidden
-        className={`absolute -inset-1.5 rounded-full bg-[conic-gradient(from_0deg,var(--grad-1),var(--grad-2),var(--grad-3),var(--grad-1))] blur-[7px] transition-opacity duration-500 motion-reduce:animate-none ${
+        className={`absolute -inset-1 rounded-full sm:-inset-1.5 bg-[conic-gradient(from_0deg,var(--grad-1),var(--grad-2),var(--grad-3),var(--grad-1))] blur-[5px] sm:blur-[7px] transition-opacity duration-500 motion-reduce:animate-none ${
           active
             ? "animate-[spin_3s_linear_infinite] opacity-100"
             : "animate-[spin_11s_linear_infinite] opacity-70"
@@ -61,8 +61,8 @@ export function Avatar() {
         width={288}
         height={288}
         priority
-        sizes="(min-width: 1024px) 240px, (min-width: 640px) 208px, 128px"
-        className="relative size-32 rounded-full border-2 border-canvas object-cover sm:size-52 lg:size-60"
+        sizes="(min-width: 1024px) 240px, (min-width: 640px) 208px, 96px"
+        className="relative size-24 rounded-full border border-[var(--glass-border)] object-cover sm:size-52 lg:size-60"
       />
     </div>
   );

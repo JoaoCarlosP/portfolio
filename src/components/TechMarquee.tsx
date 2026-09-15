@@ -1,3 +1,4 @@
+import { Reveal } from "./Reveal";
 import { techIcons } from "./tech-icons";
 
 /**
@@ -7,32 +8,41 @@ import { techIcons } from "./tech-icons";
  */
 export function TechMarquee({ label }: { label: string }) {
   return (
-    <section aria-label={label} className="relative z-10 border-t border-line py-10">
-      <div className="marquee">
-        <ul className="marquee-track">
-          {[0, 1].map((copy) =>
-            techIcons.map((icon) => (
-              <li
-                key={`${copy}-${icon.title}`}
-                className="marquee-item shrink-0"
-                style={icon.brand ? ({ "--brand": icon.brand } as React.CSSProperties) : undefined}
-                aria-hidden={copy === 1 ? true : undefined}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="30"
-                  height="30"
-                  fill="currentColor"
-                  role={copy === 0 ? "img" : undefined}
-                  aria-label={copy === 0 ? icon.title : undefined}
+    <section
+      aria-label={label}
+      className="relative z-10 border-t border-line py-10"
+    >
+      <Reveal>
+        <div className="marquee">
+          <ul className="marquee-track">
+            {[0, 1].map((copy) =>
+              techIcons.map((icon) => (
+                <li
+                  key={`${copy}-${icon.title}`}
+                  className="marquee-item shrink-0"
+                  style={
+                    icon.brand
+                      ? ({ "--brand": icon.brand } as React.CSSProperties)
+                      : undefined
+                  }
+                  aria-hidden={copy === 1 ? true : undefined}
                 >
-                  <path d={icon.path} />
-                </svg>
-              </li>
-            )),
-          )}
-        </ul>
-      </div>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="30"
+                    height="30"
+                    fill="currentColor"
+                    role={copy === 0 ? "img" : undefined}
+                    aria-label={copy === 0 ? icon.title : undefined}
+                  >
+                    <path d={icon.path} />
+                  </svg>
+                </li>
+              )),
+            )}
+          </ul>
+        </div>
+      </Reveal>
     </section>
   );
 }

@@ -10,6 +10,7 @@ import { InstallPrompt } from "@/components/InstallPrompt";
 import { ServiceWorker } from "@/components/ServiceWorker";
 import { Skills } from "@/components/Skills";
 import { Splash } from "@/components/Splash";
+import { Starfield } from "@/components/Starfield";
 import { TechMarquee } from "@/components/TechMarquee";
 import { Work } from "@/components/Work";
 import { getDictionary } from "@/content/dictionary";
@@ -45,6 +46,7 @@ export default async function Page({
         <span />
         <span />
       </div>
+      <Starfield />
 
       <Splash />
 

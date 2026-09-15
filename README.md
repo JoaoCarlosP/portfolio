@@ -22,6 +22,8 @@ Site pessoal bilíngue (PT/EN) construído com Next.js App Router, TypeScript e 
 
 **Vidro sobre gradiente.** Os painéis usam `backdrop-filter` com saturação e um brilho especular na borda superior. O campo de aurora fixo atrás da página é o que dá ao vidro algo para refratar — sem ele, glass vira cinza translúcido. Há fallback opaco para browsers sem `backdrop-filter`.
 
+**Constelações sem custo por frame.** O campo de estrelas tem posições e arestas precomputadas (`starfield-data.ts`, gerado com PRNG semeado para servidor e cliente baterem) e as três camadas de parallax se movem por transform em CSS — nada de canvas nem `requestAnimationFrame` competindo com a aurora, o marquee e o blur de vidro.
+
 **Preloader à prova de falha.** A tela de abertura é renderizada no servidor e dispensada por uma animação CSS, não por JavaScript — se o script falhar, o overlay sai do caminho sozinho em vez de trancar o site. O componente só remove o nó depois e devolve o scroll que travou; como quem trava é o mesmo código que destrava, uma página sem JS nunca fica presa. Sob `prefers-reduced-motion` a abertura é pulada.
 
 **PWA instalável.** Manifest gerado por `app/manifest.ts`, service worker próprio em `public/sw.js` (network-first para páginas, cache-first para o build hasheado) e um banner de instalação que se adapta à plataforma: Android e desktop usam `beforeinstallprompt`; iOS, que não tem essa API, recebe as instruções da Share sheet. A meta legada `apple-mobile-web-app-capable` é adicionada à mão porque o Next 16 emite apenas a versão padronizada, e iOS anterior ao 16.4 ainda depende dela.

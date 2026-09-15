@@ -22,7 +22,7 @@ export const dictionaries = {
       available: "Aberto a novas oportunidades",
       role: "Desenvolvedor Fullstack com foco em Front‑end",
       headline: "Construo interfaces que aguentam produto de verdade.",
-      lead: "São 4 anos desenvolvendo software para o mercado financeiro — SaaS e soluções para correspondentes bancários. React e TypeScript são meu terreno principal; Node.js entra quando o problema pede.",
+      lead: "Foram 4 anos desenvolvendo software para o mercado financeiro — SaaS e soluções para correspondentes bancários. React e TypeScript são meu terreno principal; Node.js entra quando o problema pede.",
       ctaProjects: "Ver projetos",
       ctaContact: "Falar comigo",
     },
@@ -66,9 +66,9 @@ export const dictionaries = {
       title: "Experiência",
       subtitle: "Mercado financeiro · 4 anos",
       role: "Desenvolvedor Fullstack com foco em Front‑end",
-      period: "2022 — presente",
+      period: "2022 — 2026",
       summary:
-        "Desenvolvimento de produtos SaaS e soluções para correspondentes bancários, do primeiro componente até o deploy.",
+        "Desenvolvi produtos SaaS e soluções para correspondentes bancários, do primeiro componente até o deploy.",
       bullets: [
         "Construí e mantive aplicações React + TypeScript em produção, com Redux Toolkit na camada de estado.",
         "Estruturei um Design System e padrões de qualidade que partiram do front-end e foram adotados em 12 repositórios.",
@@ -193,9 +193,9 @@ export const dictionaries = {
       title: "Experience",
       subtitle: "Financial sector · 4 years",
       role: "Fullstack Developer, front‑end focused",
-      period: "2022 — present",
+      period: "2022 — 2026",
       summary:
-        "Building SaaS products and tools for banking correspondents, from the first component to deployment.",
+        "Built SaaS products and tools for banking correspondents, from the first component to deployment.",
       bullets: [
         "Built and maintained production React + TypeScript applications, with Redux Toolkit in the state layer.",
         "Established a Design System and quality standards that started in the front-end and were adopted across 12 repositories.",

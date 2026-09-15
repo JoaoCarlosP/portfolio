@@ -1,7 +1,7 @@
 import type { Locale } from "@/lib/i18n";
 
 export type ProjectStatus = "live" | "wip" | "code";
-export type ProjectKind = "personal" | "study" | "academic";
+export type ProjectKind = "personal" | "study" | "academic" | "challenge";
 
 type LocalizedCopy = {
   tagline: string;
@@ -28,7 +28,7 @@ export const projects: Project[] = [
     year: "2025",
     status: "live",
     kind: "personal",
-    stack: ["React 18", "TypeScript", "Tailwind CSS", "Vite", "Supabase"],
+    stack: ["React", "TypeScript", "Tailwind CSS", "Vite", "Supabase"],
     repo: "https://github.com/JoaoCarlosP/image-aggregator",
     demo: "https://image-aggregator.vercel.app",
     copy: {
@@ -81,6 +81,38 @@ export const projects: Project[] = [
           "Routing architecture with React Router and access control",
           "Isolated service layer with Axios and typed contracts",
           "Ant Design–based design system with a custom Sass theme",
+        ],
+      },
+    },
+  },
+  {
+    slug: "jc-sports",
+    title: "JC Sports",
+    year: "2022",
+    status: "live",
+    kind: "challenge",
+    stack: ["HTML", "CSS", "JavaScript"],
+    repo: "https://github.com/JoaoCarlosP/Teste-pratico-SEO-Consultoria-ROCKY",
+    demo: "https://teste-pratico-seo-consultoria-rocky.vercel.app",
+    copy: {
+      pt: {
+        tagline: "Teste prático de processo seletivo",
+        description:
+          "E-commerce de artigos esportivos reproduzindo o layout da Netshoes, entregue como teste prático no processo seletivo da Rocky Monks. Três páginas escritas do zero, sem framework nem biblioteca.",
+        highlights: [
+          "Vitrine, cadastro e FAQ construídas à mão em HTML e CSS",
+          "CSS dividido por responsabilidade, com folha dedicada a media queries",
+          "Carrossel automático e cálculo de total do carrinho em JavaScript puro",
+        ],
+      },
+      en: {
+        tagline: "Take-home test for a job application",
+        description:
+          "A sportswear e-commerce front-end reproducing the Netshoes layout, delivered as the take-home test for Rocky Monks. Three pages written from scratch, with no framework or library.",
+        highlights: [
+          "Storefront, sign-up and FAQ pages hand-built in HTML and CSS",
+          "Stylesheets split by concern, with a dedicated media-query sheet",
+          "Auto-rotating carousel and cart total computed in vanilla JavaScript",
         ],
       },
     },

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7aa2f7"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0a0d13"/>
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="13.25" fill="none" stroke="url(#g)" stroke-opacity="0.35" stroke-width="1.5"/>
+  <text x="32" y="33" text-anchor="middle" dominant-baseline="central"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="30" font-weight="700" fill="url(#g)">JC</text>
+  <path d="M13 23 L8 32 L13 41" fill="none" stroke="url(#g)" stroke-opacity="0.45"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M51 23 L56 32 L51 41" fill="none" stroke="url(#g)" stroke-opacity="0.45"
+        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

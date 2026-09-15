@@ -11,7 +11,26 @@
   --accent: #2f62c9;
   --accent-ink: #ffffff;
   --accent-soft: rgba(47, 98, 201, 0.09);
-  --glow: rgba(47, 98, 201, 0.14);
+
+  /* Gradient ramp — used by text, borders, blobs and rings. */
+  --grad-1: #2f62c9;
+  --grad-2: #7c3aed;
+  --grad-3: #0891b2;
+
+  --spot: rgba(47, 98, 201, 0.1);
+  --blob-a: rgba(47, 98, 201, 0.22);
+  --blob-b: rgba(124, 58, 237, 0.18);
+  --blob-c: rgba(8, 145, 178, 0.16);
+
+  /* Frosted panels. The inset highlight is the specular top edge. */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.85),
+    0 8px 32px -12px rgba(15, 23, 42, 0.16);
+  --glass-shadow-hover:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
+    0 16px 48px -16px rgba(15, 23, 42, 0.22);
 }
 
 .dark {
@@ -23,7 +42,24 @@
   --accent: #7aa2f7;
   --accent-ink: #0a0d13;
   --accent-soft: rgba(122, 162, 247, 0.12);
-  --glow: rgba(122, 162, 247, 0.16);
+
+  --grad-1: #7aa2f7;
+  --grad-2: #a78bfa;
+  --grad-3: #22d3ee;
+
+  --spot: rgba(122, 162, 247, 0.16);
+  --blob-a: rgba(122, 162, 247, 0.26);
+  --blob-b: rgba(167, 139, 250, 0.22);
+  --blob-c: rgba(34, 211, 238, 0.16);
+
+  --glass-bg: rgba(22, 28, 39, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+    0 8px 32px -12px rgba(0, 0, 0, 0.6);
+  --glass-shadow-hover:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 16px 48px -16px rgba(0, 0, 0, 0.7);
 }
 
 @theme inline {
@@ -35,13 +71,15 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --color-grad-1: var(--grad-1);
+  --color-grad-2: var(--grad-2);
+  --color-grad-3: var(--grad-3);
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 html {
   scroll-behavior: smooth;
-  /* keep anchored sections clear of the sticky header */
   scroll-padding-top: 5.5rem;
 }
 
@@ -62,37 +100,271 @@ body {
   border-radius: 4px;
 }
 
-/* Ambient glow behind the hero, painted once on the page shell. */
-.page-glow::before {
-  content: "";
-  position: fixed;
-  inset: -20% -10% auto -10%;
-  height: 70vh;
-  background: radial-gradient(60% 55% at 50% 0%, var(--glow), transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+/* ---------------------------------------------------------------- *
+ * Gradients
+ * ---------------------------------------------------------------- */
+
+/* Animated gradient text. Needs a background-clip fallback color for
+   browsers that fail the clip, hence the explicit color below. */
+.text-gradient {
+  background: linear-gradient(
+    110deg,
+    var(--grad-1) 0%,
+    var(--grad-2) 35%,
+    var(--grad-3) 60%,
+    var(--grad-1) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 9s linear infinite;
 }
 
-/* Scroll reveal — opt-in via the Reveal component. */
+@keyframes gradient-pan {
+  to {
+    background-position: -250% 0;
+  }
+}
+
+/* Aurora field behind the whole page — this is what the glass refracts. */
+.aurora {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.aurora span {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  filter: blur(70px);
+  will-change: transform;
+}
+
+.aurora span:nth-child(1) {
+  width: 46vw;
+  height: 46vw;
+  left: 4%;
+  top: -8%;
+  background: var(--blob-a);
+  animation: drift-a 22s ease-in-out infinite alternate;
+}
+
+.aurora span:nth-child(2) {
+  width: 40vw;
+  height: 40vw;
+  right: 2%;
+  top: 22%;
+  background: var(--blob-b);
+  animation: drift-b 26s ease-in-out infinite alternate;
+}
+
+.aurora span:nth-child(3) {
+  width: 36vw;
+  height: 36vw;
+  left: 34%;
+  bottom: -6%;
+  background: var(--blob-c);
+  animation: drift-c 30s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate3d(9%, 7%, 0) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(-11%, 10%, 0) scale(1.1);
+  }
+}
+@keyframes drift-c {
+  to {
+    transform: translate3d(6%, -9%, 0) scale(0.9);
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Glass surfaces
+ * ---------------------------------------------------------------- */
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.3s ease-out;
+}
+
+.glass[data-active="true"] {
+  box-shadow: var(--glass-shadow-hover);
+}
+
+/* Browsers without backdrop-filter get an opaque panel instead of a
+   washed-out transparent one. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--surface);
+  }
+}
+
+/* Pointer-tracked 3D tilt, driven by --rx / --ry from Avatar. */
+.avatar-tilt {
+  transform: perspective(760px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+    scale(var(--avatar-scale, 1));
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Track the pointer closely while hovered, glide back on leave. */
+.avatar-tilt[data-active="true"] {
+  --avatar-scale: 1.04;
+  transition-duration: 0.12s;
+}
+
+/* ---------------------------------------------------------------- *
+ * Card interaction — pointer spotlight + gradient border
+ * ---------------------------------------------------------------- */
+
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Follows the pointer via --mx / --my, set in SpotlightCard. */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 0%),
+    var(--spot),
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.spotlight[data-active="true"]::before {
+  opacity: 1;
+}
+
+/* 1px gradient hairline, revealed on hover, drawn with a mask so the
+   card keeps its own background. */
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--grad-1), var(--grad-2), var(--grad-3));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.spotlight[data-active="true"]::after {
+  opacity: 0.55;
+}
+
+/* ---------------------------------------------------------------- *
+ * Scroll-driven animation, native where available
+ * ---------------------------------------------------------------- */
+
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(16px);
+}
+
+/* Fallback path: IntersectionObserver flips data-visible. */
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
   transition:
     opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.reveal[data-visible="true"] {
-  opacity: 1;
-  transform: none;
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-in linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 26%;
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reading-progress bar in the header, driven by document scroll. */
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress-grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes progress-grow {
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  .reveal,
+  .reveal[data-visible="true"] {
     opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+  .text-gradient,
+  .scroll-progress,
+  /* matched per-child so this outranks the .aurora span:nth-child rules */
+  .aurora span:nth-child(1),
+  .aurora span:nth-child(2),
+  .aurora span:nth-child(3) {
+    animation: none;
+  }
+  .scroll-progress {
+    transform: scaleX(1);
+  }
+  .avatar-tilt,
+  .avatar-tilt[data-active="true"] {
     transform: none;
     transition: none;
   }

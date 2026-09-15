@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { MoonIcon, SunIcon } from "./icons";
+import { Moon, Sun } from "lucide-react";
 
 /** The theme lives on <html>, set before paint by the inline script in the layout. */
 function subscribe(onChange: () => void) {
@@ -42,9 +42,11 @@ export function ThemeToggle({ label }: { label: string }) {
       aria-label={label}
       title={label}
       aria-pressed={dark}
-      className="grid size-9 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent hover:text-accent"
+      className="glass group grid size-9 place-items-center overflow-hidden rounded-lg text-muted transition-colors hover:text-accent"
     >
-      {dark ? <MoonIcon /> : <SunIcon />}
+      <span className="transition-transform duration-500 group-hover:rotate-90">
+        {dark ? <Moon size={18} /> : <Sun size={18} />}
+      </span>
     </button>
   );
 }

@@ -1,9 +1,13 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { ArrowUpRight, Code2 } from "lucide-react";
 import type { Dictionary } from "@/content/dictionary";
 import { projects, type Project } from "@/content/projects";
 import type { Locale } from "@/lib/i18n";
 import { Reveal } from "./Reveal";
 import { Section } from "./Section";
-import { ArrowUpRight, CodeIcon } from "./icons";
+import { SpotlightCard } from "./SpotlightCard";
 
 const statusStyles: Record<Project["status"], string> = {
   live: "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
@@ -11,19 +15,42 @@ const statusStyles: Record<Project["status"], string> = {
   code: "border-line bg-canvas text-muted",
 };
 
+/** Techs shared by more than one project, most common first. */
+function useFilters() {
+  return useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const project of projects) {
+      for (const tech of project.stack) {
+        counts.set(tech, (counts.get(tech) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()]
+      .filter(([, count]) => count > 1)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([tech]) => tech);
+  }, []);
+}
+
 function ProjectCard({
   project,
   t,
   locale,
+  active,
+  onPickTech,
 }: {
   project: Project;
   t: Dictionary;
   locale: Locale;
+  active: string | null;
+  onPickTech: (tech: string) => void;
 }) {
   const copy = project.copy[locale];
 
   return (
-    <article className="flex h-full flex-col rounded-xl border border-line bg-surface p-6 transition-colors hover:border-accent/50">
+    <SpotlightCard
+      as="article"
+      className="flex h-full flex-col glass rounded-2xl p-6"
+    >
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="mr-auto text-base font-semibold text-ink">{project.title}</h3>
         <span
@@ -43,21 +70,34 @@ function ProjectCard({
       <ul className="mt-2 space-y-1.5">
         {copy.highlights.map((highlight) => (
           <li key={highlight} className="flex gap-2 text-[13px] leading-relaxed text-ink">
-            <span aria-hidden className="mt-1.5 size-1 shrink-0 rounded-full bg-accent" />
+            <span
+              aria-hidden
+              className="mt-1.5 size-1 shrink-0 rounded-full bg-gradient-to-r from-grad-1 to-grad-2"
+            />
             <span>{highlight}</span>
           </li>
         ))}
       </ul>
 
       <ul className="mt-5 flex flex-wrap gap-1.5">
-        {project.stack.map((tech) => (
-          <li
-            key={tech}
-            className="rounded-md border border-line bg-canvas px-2 py-1 font-mono text-[11px] text-muted"
-          >
-            {tech}
-          </li>
-        ))}
+        {project.stack.map((tech) => {
+          const isActive = active === tech;
+          return (
+            <li key={tech}>
+              <button
+                type="button"
+                onClick={() => onPickTech(tech)}
+                className={`rounded-md border px-2 py-1 font-mono text-[11px] transition-colors ${
+                  isActive
+                    ? "border-accent/50 bg-accent-soft text-accent"
+                    : "border-line bg-canvas/50 text-muted hover:border-accent/40 hover:text-accent"
+                }`}
+              >
+                {tech}
+              </button>
+            </li>
+          );
+        })}
       </ul>
 
       <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-line pt-4">
@@ -69,9 +109,9 @@ function ProjectCard({
             href={project.repo}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+            className="glass group/link inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:text-accent"
           >
-            <CodeIcon width={14} height={14} />
+            <Code2 size={14} />
             {t.projects.viewCode}
           </a>
         )}
@@ -80,27 +120,89 @@ function ProjectCard({
             href={project.demo}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-accent-ink transition-opacity hover:opacity-90"
+            className="group/demo relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-accent-ink"
           >
-            {t.projects.viewDemo}
-            <ArrowUpRight width={14} height={14} />
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-grad-1 via-grad-2 to-grad-3 transition-transform duration-500 group-hover/demo:translate-x-0" />
+            <span className="relative">{t.projects.viewDemo}</span>
+            <ArrowUpRight
+              size={14}
+              className="relative transition-transform duration-300 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5"
+            />
           </a>
         )}
       </div>
-    </article>
+    </SpotlightCard>
   );
 }
 
 export function Projects({ t, locale }: { t: Dictionary; locale: Locale }) {
+  const [active, setActive] = useState<string | null>(null);
+  const filters = useFilters();
+
+  const shown = active ? projects.filter((p) => p.stack.includes(active)) : projects;
+
+  function pick(tech: string) {
+    setActive((current) => (current === tech ? null : tech));
+  }
+
   return (
     <Section id="projects" title={t.projects.title} lead={t.projects.lead}>
-      <div className="grid gap-4 md:grid-cols-2">
-        {projects.map((project, index) => (
-          <Reveal key={project.slug} delay={index * 70} className="h-full">
-            <ProjectCard project={project} t={t} locale={locale} />
-          </Reveal>
+      <div
+        role="group"
+        aria-label={t.projects.filterLabel}
+        className="mb-6 flex flex-wrap items-center gap-2"
+      >
+        <button
+          type="button"
+          onClick={() => setActive(null)}
+          aria-pressed={active === null}
+          className={`rounded-full border px-3 py-1 font-mono text-[11px] transition-colors ${
+            active === null
+              ? "border-accent/50 bg-accent-soft text-accent"
+              : "border-line text-muted hover:border-accent/40 hover:text-accent"
+          }`}
+        >
+          {t.projects.filterAll}
+        </button>
+        {filters.map((tech) => (
+          <button
+            key={tech}
+            type="button"
+            onClick={() => pick(tech)}
+            aria-pressed={active === tech}
+            className={`rounded-full border px-3 py-1 font-mono text-[11px] transition-colors ${
+              active === tech
+                ? "border-accent/50 bg-accent-soft text-accent"
+                : "border-line text-muted hover:border-accent/40 hover:text-accent"
+            }`}
+          >
+            {tech}
+          </button>
         ))}
+        <span aria-live="polite" className="ml-auto font-mono text-[11px] text-muted">
+          {shown.length} {shown.length === 1 ? t.projects.countOne : t.projects.countMany}
+        </span>
       </div>
+
+      {shown.length === 0 ? (
+        <p className="rounded-xl border border-dashed border-line p-8 text-center text-sm text-muted">
+          {t.projects.filterEmpty}
+        </p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          {shown.map((project, index) => (
+            <Reveal key={project.slug} delay={index * 70} className="h-full">
+              <ProjectCard
+                project={project}
+                t={t}
+                locale={locale}
+                active={active}
+                onPickTech={pick}
+              />
+            </Reveal>
+          ))}
+        </div>
+      )}
     </Section>
   );
 }

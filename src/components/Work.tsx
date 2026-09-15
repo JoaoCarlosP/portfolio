@@ -1,16 +1,23 @@
+import { Briefcase } from "lucide-react";
 import type { Dictionary } from "@/content/dictionary";
 import { Section } from "./Section";
+import { SpotlightCard } from "./SpotlightCard";
 
 export function Work({ t }: { t: Dictionary }) {
   return (
     <Section id="work" title={t.work.title}>
-      <div className="rounded-xl border border-line bg-surface p-6 sm:p-8">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <div>
-            <h3 className="text-lg font-semibold text-ink">{t.work.role}</h3>
-            <p className="mt-1 font-mono text-xs tracking-wide text-accent">
-              {t.work.subtitle}
-            </p>
+      <SpotlightCard className="glass rounded-2xl p-6 sm:p-8">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex gap-4">
+            <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-grad-1/15 to-grad-2/15 text-accent">
+              <Briefcase size={18} />
+            </span>
+            <div>
+              <h3 className="text-lg font-semibold text-ink">{t.work.role}</h3>
+              <p className="mt-1 font-mono text-xs tracking-wide text-accent">
+                {t.work.subtitle}
+              </p>
+            </div>
           </div>
           <p className="font-mono text-xs text-muted">{t.work.period}</p>
         </div>
@@ -20,7 +27,10 @@ export function Work({ t }: { t: Dictionary }) {
         <ul className="mt-6 space-y-3">
           {t.work.bullets.map((bullet) => (
             <li key={bullet} className="flex gap-3 text-[15px] leading-relaxed text-ink">
-              <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" />
+              <span
+                aria-hidden
+                className="mt-2 size-1.5 shrink-0 rounded-full bg-gradient-to-r from-grad-1 to-grad-2"
+              />
               <span>{bullet}</span>
             </li>
           ))}
@@ -29,7 +39,7 @@ export function Work({ t }: { t: Dictionary }) {
         <p className="mt-6 border-t border-line pt-4 text-xs text-muted italic">
           {t.work.note}
         </p>
-      </div>
+      </SpotlightCard>
     </Section>
   );
 }

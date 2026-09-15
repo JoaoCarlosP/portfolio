@@ -34,7 +34,14 @@ export default async function Page({
   };
 
   return (
-    <div className="page-glow">
+    <div className="relative overflow-x-clip">
+      {/* Colour field the glass panels refract. */}
+      <div className="aurora" aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+
       <Header t={t} locale={locale} />
       <main className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">
         <Hero t={t} />

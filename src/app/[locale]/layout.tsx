@@ -68,16 +68,20 @@ export async function generateMetadata({
 }
 
 /**
- * Applies the stored theme before first paint so the page never flashes
- * the wrong palette.
+ * Runs before first paint: marks that scripting is available and applies
+ * the stored theme, so the page never flashes the wrong palette.
  */
-const themeScript = `
+const bootScript = `
 (function () {
+  var root = document.documentElement;
+  // Gates every "starts hidden" style. Without scripting the page must
+  // render fully visible rather than wait for a reveal that never comes.
+  root.classList.add("js");
   try {
     var stored = localStorage.getItem("theme");
     var dark = stored ? stored === "dark"
       : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (dark) document.documentElement.classList.add("dark");
+    if (dark) root.classList.add("dark");
   } catch (e) {}
 })();
 `;
@@ -101,7 +105,7 @@ export default async function LocaleLayout({
           Apple's legacy flag to launch standalone.
         */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body
         className={`${sans.variable} ${display.variable} ${mono.variable} font-sans antialiased`}

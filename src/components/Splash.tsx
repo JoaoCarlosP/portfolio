@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
+import { INTRO_MS } from "@/lib/intro";
 
-/** Must outlast the CSS dismiss animation (1.5s delay + 0.65s fade). */
-const LIFETIME_MS = 2300;
+/** Removal trails the dismiss animation slightly; by then the overlay is
+ *  already `visibility: hidden`, so nothing flickers. */
+const REMOVE_MS = INTRO_MS + 120;
 
 /**
  * Intro preloader.
@@ -23,13 +25,18 @@ export function Splash() {
     const previous = root.style.overflow;
     root.style.overflow = "hidden";
 
-    const timer = window.setTimeout(() => {
+    // Release the scroll exactly when the overlay stops intercepting.
+    // Holding it any longer leaves a window where a nav click is
+    // accepted but the resulting scroll is swallowed.
+    const unlock = window.setTimeout(() => {
       root.style.overflow = previous;
-      setDone(true);
-    }, LIFETIME_MS);
+    }, INTRO_MS);
+
+    const remove = window.setTimeout(() => setDone(true), REMOVE_MS);
 
     return () => {
-      window.clearTimeout(timer);
+      window.clearTimeout(unlock);
+      window.clearTimeout(remove);
       root.style.overflow = previous;
     };
   }, []);

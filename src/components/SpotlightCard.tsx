@@ -39,7 +39,7 @@ export function SpotlightCard({ children, className = "", as: Tag = "div" }: Pro
       onPointerEnter={handleEnter}
       onPointerLeave={() => setActive(false)}
       data-active={active}
-      className={`spotlight transition-transform duration-300 ease-out ${
+      className={`spotlight assemble transition-transform duration-300 ease-out ${
         active ? "-translate-y-0.5" : ""
       } ${className}`}
     >
